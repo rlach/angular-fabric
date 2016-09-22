@@ -242,26 +242,14 @@ angular.module('common.fabric', [
 		//
 		// Shape
 		// ==============================================================
-		self.addShape = function(svgURL) {
-			fabric.loadSVGFromURL(svgURL, function(objects) {
-				var object = fabric.util.groupSVGElements(objects, self.shapeDefaults);
-				object.id = self.createId();
-
-				for (var p in self.shapeDefaults) {
-					object[p] = self.shapeDefaults[p];
-				}
-
-				if (object.isSameColor && object.isSameColor() || !object.paths) {
-					object.setFill('#0088cc');
-				} else if (object.paths) {
-					for (var i = 0; i < object.paths.length; i++) {
-						object.paths[i].setFill('#0088cc');
-					}
-				}
-
-				self.addObjectToCanvas(object);
-			});
-		};
+		self.addShape = function(svgURL, options) {
+ 			fabric.loadSVGFromURL(svgURL, function(objects, options) {
+ 				var object = fabric.util.groupSVGElements(objects, options);
+ 				object.id = self.createId();
+				
+ 				self.addObjectToCanvas(object);
+ 			});
+  		};
 
 		//
 		// Text
@@ -274,6 +262,14 @@ angular.module('common.fabric', [
 			self.addObjectToCanvas(object);
 		};
 
+		self.addIText = function(str) {
+ 			str = str || 'New Text';
+ 			var object = new FabricWindow.IText(str, self.textDefaults);
+ 			object.id = self.createId();
+ 
+ 			self.addObjectToCanvas(object);
+ 		};
+		
 		self.getText = function() {
 			return getActiveProp('text');
 		};
@@ -827,6 +823,11 @@ angular.module('common.fabric', [
 			});
 		};
 
+		self.setCanvasBackgroundImage = function(image) {
+ 			self.backgroundImage = image;
+ 			canvas.setBackgroundImage(image);
+ 			self.render();
+ 		};	
 
 		//
 		// Set Global Defaults
@@ -894,6 +895,7 @@ angular.module('common.fabric', [
 
 			JSONObject.background = JSONObject.background || '#ffffff';
 			self.setCanvasBackgroundColor(JSONObject.background);
+			self.setCanvasBackgroundImage(JSONObject.bgDefaultImage);
 
 			// Set the size of the canvas
 			JSONObject.width = JSONObject.width || 300;

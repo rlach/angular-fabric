@@ -1,0 +1,18 @@
+{
+  "name": "angular-fabric",
+  "version": "0.1.0",
+  "description": "FabricJS Angular Integration",
+  "main": "gulpfile.js",
+  "directories": {
+    "example": "example"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/safderiqbal/angular-fabric/issues"
+  },
+  "devDependencies": {
+    "gulp-concat": "~2.6.0",
+    "gulp-uglify": "~1.2.0",
+    "uglify": "~0.1.5"
+  }
+}

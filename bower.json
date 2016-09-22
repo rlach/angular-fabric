@@ -1,0 +1,21 @@
+{
+  "name": "angular-fabric",
+  "main": "dist/angular-fabric.min.js",
+  "description": "AngularJS directive FabricJS",
+  "license": "MIT",
+  "ignore": [
+    "lib",
+    "src",
+    "test",
+    "build_all",
+    "build.js",
+    "build.sh",
+    "create_build_script.js",
+    "test.js",
+    "HEADER.js"
+  ],
+  "dependencies": {
+    "angular": ">1.4.0",
+    "fabric": "~1.6.x"
+  }
+}
