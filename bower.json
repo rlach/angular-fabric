@@ -14,7 +14,7 @@
     "gulpfile.js",
     "test.js",
     "HEADER.js",
-    ".gitignore",
+    ".gitignore"
   ],
   "dependencies": {
     "angular": ">1.4.0",
