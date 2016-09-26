@@ -1,18 +1,20 @@
 {
   "name": "angular-fabric",
-  "main": "dist/angular-fabric.min.js",
+  "main": "dist/angular-fabric.js",
   "description": "AngularJS directive FabricJS",
   "license": "MIT",
   "ignore": [
     "lib",
     "src",
     "test",
+    "example",
     "build_all",
     "build.js",
     "build.sh",
-    "create_build_script.js",
+    "gulpfile.js",
     "test.js",
-    "HEADER.js"
+    "HEADER.js",
+    ".gitignore",
   ],
   "dependencies": {
     "angular": ">1.4.0",

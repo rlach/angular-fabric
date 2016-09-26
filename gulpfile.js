@@ -6,7 +6,7 @@ var paths = {
   scripts: ['src/**/*.js'],
 };
 
-gulp.task('default', [], function() {
+gulp.task('minify', [], function () {
   // Minify and copy all JavaScript (except vendor scripts)
   // with sourcemaps all the way down
   return gulp.src(paths.scripts)
@@ -14,3 +14,13 @@ gulp.task('default', [], function() {
     .pipe(concat('angular-fabric.min.js'))
     .pipe(gulp.dest('dist/'));
 });
+
+gulp.task('build', [], function () {
+  // Minify and copy all JavaScript (except vendor scripts)
+  // with sourcemaps all the way down
+  return gulp.src(paths.scripts)
+    .pipe(concat('angular-fabric.js'))
+    .pipe(gulp.dest('dist/'));
+});
+
+gulp.task('default', ['minify', 'build']);
