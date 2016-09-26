@@ -15,8 +15,8 @@ angular.module('common.fabric.directive', [
 			// Continue rendering the canvas until the user clicks
 			// to avoid the "calcOffset" bug upon load.
 			$('body').on('click', 'canvas', function() {
-				if ($scope.fabric.setUserHasClickedCanvas) {
-					$scope.fabric.setUserHasClickedCanvas(true);
+				if (fabric.setUserHasClickedCanvas) {
+					fabric.setUserHasClickedCanvas(true);
 				}
 			});
 
@@ -24,64 +24,64 @@ angular.module('common.fabric.directive', [
 			// Watching Controller Variables
 			// ============================================================
 			$scope.$watch('fabric.canvasBackgroundColor', function(newVal) {
-				if ($scope.fabric.setCanvasBackgroundColor) {
-					$scope.fabric.setCanvasBackgroundColor(newVal);
+				if (fabric.setCanvasBackgroundColor) {
+					fabric.setCanvasBackgroundColor(newVal);
 				}
 			});
 
 			$scope.$watch('fabric.selectedObject.text', function(newVal) {
 				if (typeof newVal === 'string') {
-					$scope.fabric.setText(newVal);
-					$scope.fabric.render();
+					fabric.setText(newVal);
+					fabric.render();
 				}
 			});
 
 			$scope.$watch('fabric.selectedObject.fontSize', function(newVal) {
 				if (typeof newVal === 'string' || typeof newVal === 'number') {
-					$scope.fabric.setFontSize(newVal);
-					$scope.fabric.render();
+					fabric.setFontSize(newVal);
+					fabric.render();
 				}
 			});
 
 			$scope.$watch('fabric.selectedObject.lineHeight', function(newVal) {
 				if (typeof newVal === 'string' || typeof newVal === 'number') {
-					$scope.fabric.setLineHeight(newVal);
-					$scope.fabric.render();
+					fabric.setLineHeight(newVal);
+					fabric.render();
 				}
 			});
 
 			$scope.$watch('fabric.selectedObject.textAlign', function(newVal) {
 				if (typeof newVal === 'string') {
-					$scope.fabric.setTextAlign(newVal);
-					$scope.fabric.render();
+					fabric.setTextAlign(newVal);
+					fabric.render();
 				}
 			});
 
 			$scope.$watch('fabric.selectedObject.fontFamily', function(newVal) {
 				if (typeof newVal === 'string' && newVal) {
-					$scope.fabric.setFontFamily(newVal);
-					$scope.fabric.render();
+					fabric.setFontFamily(newVal);
+					fabric.render();
 				}
 			});
 
 			$scope.$watch('fabric.selectedObject.opacity', function(newVal) {
 				if (typeof newVal === 'string' || typeof newVal === 'number') {
-					$scope.fabric.setOpacity(newVal);
-					$scope.fabric.render();
+					fabric.setOpacity(newVal);
+					fabric.render();
 				}
 			});
 
 			$scope.$watch('fabric.selectedObject.fill', function(newVal) {
 				if (typeof newVal === 'string') {
-					$scope.fabric.setFill(newVal);
-					$scope.fabric.render();
+					fabric.setFill(newVal);
+					fabric.render();
 				}
 			});
 
 			$scope.$watch('fabric.selectedObject.tint', function(newVal) {
 				if (typeof newVal === 'string') {
-					$scope.fabric.setTint(newVal);
-					$scope.fabric.render();
+					fabric.setTint(newVal);
+					fabric.render();
 				}
 			});
 		}
