@@ -126,7 +126,6 @@ angular.module('common.fabric', [
 			canvas.calcOffset();
 			canvas.renderAll();
 			self.renderCount++;
-			console.log('Render cycle:', self.renderCount);
 		};
 
 		self.setCanvas = function(newCanvas) {
@@ -246,7 +245,7 @@ angular.module('common.fabric', [
  			fabric.loadSVGFromURL(svgURL, function(objects, options) {
  				var object = fabric.util.groupSVGElements(objects, options);
  				object.id = self.createId();
-				
+
  				self.addObjectToCanvas(object);
  			});
   		};
@@ -266,10 +265,10 @@ angular.module('common.fabric', [
  			str = str || 'New Text';
  			var object = new FabricWindow.IText(str, self.textDefaults);
  			object.id = self.createId();
- 
+
  			self.addObjectToCanvas(object);
  		};
-		
+
 		self.getText = function() {
 			return getActiveProp('text');
 		};
@@ -827,7 +826,7 @@ angular.module('common.fabric', [
  			self.backgroundImage = image;
  			canvas.setBackgroundImage(image);
  			self.render();
- 		};	
+ 		};
 
 		//
 		// Set Global Defaults
