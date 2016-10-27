@@ -1,6 +1,6 @@
 {
   "name": "angular-fabric-custom",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "private": true,
   "description": "FabricJS Angular Integration",
   "main": "gulpfile.js",

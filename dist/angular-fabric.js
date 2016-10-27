@@ -1178,7 +1178,7 @@ angular.module('common.fabric.directive', [
 
 DirectiveController.$inject = ['$scope', '$element', 'FabricCanvas'];
 
-function DirectiveController($scope, $element, $timeout, FabricCanvas, $window) {
+function DirectiveController($scope, $element, FabricCanvas) {
 			FabricCanvas.setElement($element);
 			FabricCanvas.createCanvas();
 
