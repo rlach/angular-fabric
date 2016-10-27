@@ -1,6 +1,8 @@
 {
   "name": "angular-fabric",
   "main": "dist/angular-fabric.js",
+  "private": true,
+  "version": "0.2.1",
   "description": "AngularJS directive FabricJS",
   "license": "MIT",
   "ignore": [
