@@ -1171,7 +1171,14 @@ angular.module('common.fabric.directive', [
 		scope: {
 			fabric: '='
 		},
-		controller: function($scope, $element) {
+		controller: DirectiveController
+	};
+
+}]);
+
+DirectiveController.$inject = ['$scope', '$element'];
+
+function DirectiveController($scope, $element) {
 			FabricCanvas.setElement($element);
 			FabricCanvas.createCanvas();
 
@@ -1248,10 +1255,6 @@ angular.module('common.fabric.directive', [
 				}
 			});
 		}
-	};
-
-}]);
-
 angular.module('common.fabric.dirtyStatus', [])
 
 .service('FabricDirtyStatus', ['$window', function($window) {
