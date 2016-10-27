@@ -2,7 +2,7 @@ angular.module('common.fabric.directive', [
 	'common.fabric.canvas'
 ])
 
-.directive('fabric', ['$timeout', 'FabricCanvas', '$window', function($timeout, FabricCanvas, $window) {
+.directive('fabric', ['FabricCanvas', function(FabricCanvas) {
 
 	return {
 		scope: {
@@ -13,9 +13,9 @@ angular.module('common.fabric.directive', [
 
 }]);
 
-DirectiveController.$inject = ['$scope', '$element'];
+DirectiveController.$inject = ['$scope', '$element', 'FabricCanvas'];
 
-function DirectiveController($scope, $element) {
+function DirectiveController($scope, $element, $timeout, FabricCanvas, $window) {
 			FabricCanvas.setElement($element);
 			FabricCanvas.createCanvas();
 
