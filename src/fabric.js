@@ -79,8 +79,8 @@ angular.module('common.fabric', [
 			return typeof object === 'object' && object !== null ? object[name] : '';
 		}
 
-		function setActiveProp(name, value) {
-			var object = canvas.getActiveObject();
+		function setActiveProp(name, value, object) {
+			object = object || canvas.getActiveObject();
 			object.set(name, value);
 			self.render();
 		}
@@ -259,6 +259,8 @@ angular.module('common.fabric', [
 			object.id = self.createId();
 
 			self.addObjectToCanvas(object);
+
+			return object;
 		};
 
 		self.addIText = function(str) {
@@ -267,6 +269,8 @@ angular.module('common.fabric', [
  			object.id = self.createId();
 
  			self.addObjectToCanvas(object);
+
+			 return object;
  		};
 
 		self.getText = function() {
@@ -331,9 +335,10 @@ angular.module('common.fabric', [
 			return getActiveStyle('fontWeight') === 'bold';
 		};
 
-		self.toggleBold = function() {
+		self.toggleBold = function(object) {
 			setActiveStyle('fontWeight',
-				getActiveStyle('fontWeight') === 'bold' ? '' : 'bold');
+				getActiveStyle('fontWeight') === 'bold' ? '' : 'bold',
+				object);
 			self.render();
 		};
 
@@ -344,9 +349,10 @@ angular.module('common.fabric', [
 			return getActiveStyle('fontStyle') === 'italic';
 		};
 
-		self.toggleItalic = function() {
+		self.toggleItalic = function(object) {
 			setActiveStyle('fontStyle',
-				getActiveStyle('fontStyle') === 'italic' ? '' : 'italic');
+				getActiveStyle('fontStyle') === 'italic' ? '' : 'italic',
+				object);
 			self.render();
 		};
 
@@ -357,10 +363,10 @@ angular.module('common.fabric', [
 			return getActiveStyle('textDecoration').indexOf('underline') > -1;
 		};
 
-		self.toggleUnderline = function() {
+		self.toggleUnderline = function(object) {
 			var value = self.isUnderline() ? getActiveStyle('textDecoration').replace('underline', '') : (getActiveStyle('textDecoration') + ' underline');
 
-			setActiveStyle('textDecoration', value);
+			setActiveStyle('textDecoration', value, object);
 			self.render();
 		};
 
@@ -371,10 +377,10 @@ angular.module('common.fabric', [
 			return getActiveStyle('textDecoration').indexOf('line-through') > -1;
 		};
 
-		self.toggleLinethrough = function() {
+		self.toggleLinethrough = function(object) {
 			var value = self.isLinethrough() ? getActiveStyle('textDecoration').replace('line-through', '') : (getActiveStyle('textDecoration') + ' line-through');
 
-			setActiveStyle('textDecoration', value);
+			setActiveStyle('textDecoration', value, object);
 			self.render();
 		};
 

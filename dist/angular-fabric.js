@@ -79,8 +79,8 @@ angular.module('common.fabric', [
 			return typeof object === 'object' && object !== null ? object[name] : '';
 		}
 
-		function setActiveProp(name, value) {
-			var object = canvas.getActiveObject();
+		function setActiveProp(name, value, object) {
+			object = object || canvas.getActiveObject();
 			object.set(name, value);
 			self.render();
 		}
@@ -259,6 +259,8 @@ angular.module('common.fabric', [
 			object.id = self.createId();
 
 			self.addObjectToCanvas(object);
+
+			return object;
 		};
 
 		self.addIText = function(str) {
@@ -267,6 +269,8 @@ angular.module('common.fabric', [
  			object.id = self.createId();
 
  			self.addObjectToCanvas(object);
+
+			 return object;
  		};
 
 		self.getText = function() {
@@ -331,9 +335,10 @@ angular.module('common.fabric', [
 			return getActiveStyle('fontWeight') === 'bold';
 		};
 
-		self.toggleBold = function() {
+		self.toggleBold = function(object) {
 			setActiveStyle('fontWeight',
-				getActiveStyle('fontWeight') === 'bold' ? '' : 'bold');
+				getActiveStyle('fontWeight') === 'bold' ? '' : 'bold',
+				object);
 			self.render();
 		};
 
@@ -344,9 +349,10 @@ angular.module('common.fabric', [
 			return getActiveStyle('fontStyle') === 'italic';
 		};
 
-		self.toggleItalic = function() {
+		self.toggleItalic = function(object) {
 			setActiveStyle('fontStyle',
-				getActiveStyle('fontStyle') === 'italic' ? '' : 'italic');
+				getActiveStyle('fontStyle') === 'italic' ? '' : 'italic',
+				object);
 			self.render();
 		};
 
@@ -357,10 +363,10 @@ angular.module('common.fabric', [
 			return getActiveStyle('textDecoration').indexOf('underline') > -1;
 		};
 
-		self.toggleUnderline = function() {
+		self.toggleUnderline = function(object) {
 			var value = self.isUnderline() ? getActiveStyle('textDecoration').replace('underline', '') : (getActiveStyle('textDecoration') + ' underline');
 
-			setActiveStyle('textDecoration', value);
+			setActiveStyle('textDecoration', value, object);
 			self.render();
 		};
 
@@ -371,10 +377,10 @@ angular.module('common.fabric', [
 			return getActiveStyle('textDecoration').indexOf('line-through') > -1;
 		};
 
-		self.toggleLinethrough = function() {
+		self.toggleLinethrough = function(object) {
 			var value = self.isLinethrough() ? getActiveStyle('textDecoration').replace('line-through', '') : (getActiveStyle('textDecoration') + ' line-through');
 
-			setActiveStyle('textDecoration', value);
+			setActiveStyle('textDecoration', value, object);
 			self.render();
 		};
 
@@ -1166,95 +1172,97 @@ angular.module('common.fabric.directive', [
 ])
 
 .directive('fabric', ['FabricCanvas', function(FabricCanvas) {
-
 	return {
 		scope: {
 			fabric: '='
 		},
 		controller: DirectiveController
 	};
-
 }]);
 
-DirectiveController.$inject = ['$scope', '$element', 'FabricCanvas'];
+DirectiveController.$inject = ['$scope', '$timeout', '$element', 'FabricCanvas'];
 
-function DirectiveController($scope, $element, FabricCanvas) {
-			FabricCanvas.setElement($element);
-			FabricCanvas.createCanvas();
+function DirectiveController($scope, $timeout, $element, FabricCanvas) {
+	var controller = function () {
+		FabricCanvas.setElement($element);
+		FabricCanvas.createCanvas();
 
-			// Continue rendering the canvas until the user clicks
-			// to avoid the "calcOffset" bug upon load.
-			$('body').on('click', 'canvas', function() {
-				if (fabric.setUserHasClickedCanvas) {
-					fabric.setUserHasClickedCanvas(true);
-				}
-			});
+		// Continue rendering the canvas until the user clicks
+		// to avoid the "calcOffset" bug upon load.
+		$('body').on('click', 'canvas', function() {
+			if (fabric.setUserHasClickedCanvas) {
+				fabric.setUserHasClickedCanvas(true);
+			}
+		});
 
-			//
-			// Watching Controller Variables
-			// ============================================================
-			$scope.$watch('fabric.canvasBackgroundColor', function(newVal) {
-				if (fabric.setCanvasBackgroundColor) {
-					fabric.setCanvasBackgroundColor(newVal);
-				}
-			});
+		//
+		// Watching Controller Variables
+		// ============================================================
+		$scope.$watch('fabric.canvasBackgroundColor', function(newVal) {
+			if (fabric.setCanvasBackgroundColor) {
+				fabric.setCanvasBackgroundColor(newVal);
+			}
+		});
 
-			$scope.$watch('fabric.selectedObject.text', function(newVal) {
-				if (typeof newVal === 'string') {
-					fabric.setText(newVal);
-					fabric.render();
-				}
-			});
+		$scope.$watch('fabric.selectedObject.text', function(newVal) {
+			if (typeof newVal === 'string') {
+				fabric.setText(newVal);
+				fabric.render();
+			}
+		});
 
-			$scope.$watch('fabric.selectedObject.fontSize', function(newVal) {
-				if (typeof newVal === 'string' || typeof newVal === 'number') {
-					fabric.setFontSize(newVal);
-					fabric.render();
-				}
-			});
+		$scope.$watch('fabric.selectedObject.fontSize', function(newVal) {
+			if (typeof newVal === 'string' || typeof newVal === 'number') {
+				fabric.setFontSize(newVal);
+				fabric.render();
+			}
+		});
 
-			$scope.$watch('fabric.selectedObject.lineHeight', function(newVal) {
-				if (typeof newVal === 'string' || typeof newVal === 'number') {
-					fabric.setLineHeight(newVal);
-					fabric.render();
-				}
-			});
+		$scope.$watch('fabric.selectedObject.lineHeight', function(newVal) {
+			if (typeof newVal === 'string' || typeof newVal === 'number') {
+				fabric.setLineHeight(newVal);
+				fabric.render();
+			}
+		});
 
-			$scope.$watch('fabric.selectedObject.textAlign', function(newVal) {
-				if (typeof newVal === 'string') {
-					fabric.setTextAlign(newVal);
-					fabric.render();
-				}
-			});
+		$scope.$watch('fabric.selectedObject.textAlign', function(newVal) {
+			if (typeof newVal === 'string') {
+				fabric.setTextAlign(newVal);
+				fabric.render();
+			}
+		});
 
-			$scope.$watch('fabric.selectedObject.fontFamily', function(newVal) {
-				if (typeof newVal === 'string' && newVal) {
-					fabric.setFontFamily(newVal);
-					fabric.render();
-				}
-			});
+		$scope.$watch('fabric.selectedObject.fontFamily', function(newVal) {
+			if (typeof newVal === 'string' && newVal) {
+				fabric.setFontFamily(newVal);
+				fabric.render();
+			}
+		});
 
-			$scope.$watch('fabric.selectedObject.opacity', function(newVal) {
-				if (typeof newVal === 'string' || typeof newVal === 'number') {
-					fabric.setOpacity(newVal);
-					fabric.render();
-				}
-			});
+		$scope.$watch('fabric.selectedObject.opacity', function(newVal) {
+			if (typeof newVal === 'string' || typeof newVal === 'number') {
+				fabric.setOpacity(newVal);
+				fabric.render();
+			}
+		});
 
-			$scope.$watch('fabric.selectedObject.fill', function(newVal) {
-				if (typeof newVal === 'string') {
-					fabric.setFill(newVal);
-					fabric.render();
-				}
-			});
+		$scope.$watch('fabric.selectedObject.fill', function(newVal) {
+			if (typeof newVal === 'string') {
+				fabric.setFill(newVal);
+				fabric.render();
+			}
+		});
 
-			$scope.$watch('fabric.selectedObject.tint', function(newVal) {
-				if (typeof newVal === 'string') {
-					fabric.setTint(newVal);
-					fabric.render();
-				}
-			});
-		}
+		$scope.$watch('fabric.selectedObject.tint', function(newVal) {
+			if (typeof newVal === 'string') {
+				fabric.setTint(newVal);
+				fabric.render();
+			}
+		});
+	};
+
+	$timeout(controller, 0);
+}
 angular.module('common.fabric.dirtyStatus', [])
 
 .service('FabricDirtyStatus', ['$window', function($window) {
