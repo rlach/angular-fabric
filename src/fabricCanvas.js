@@ -3,7 +3,8 @@ angular.module('common.fabric.canvas', [
 ])
 
 .service('FabricCanvas', ['FabricWindow', '$rootScope', function(FabricWindow, $rootScope) {
-
+	'use strict';
+	
 	var self = {
 		canvasId: null,
 		element: null,

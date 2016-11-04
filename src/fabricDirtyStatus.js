@@ -1,6 +1,7 @@
 angular.module('common.fabric.dirtyStatus', [])
 
 .service('FabricDirtyStatus', ['$window', function($window) {
+	'use strict';
 
 	var self = {
 		dirty: false

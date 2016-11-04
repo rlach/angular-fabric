@@ -1,6 +1,7 @@
 angular.module('common.fabric.constants', [])
 
 .service('FabricConstants', [function() {
+	'use strict';
 
 	var objectDefaults = {
 		rotatingPointOffset: 20,

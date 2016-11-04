@@ -2,7 +2,9 @@ angular.module('common.fabric.directive', [
 	'common.fabric.canvas'
 ])
 
-.directive('fabric', ['FabricCanvas', function(FabricCanvas) {
+.directive('fabric', [function() {
+	'use strict';
+
 	return {
 		scope: {
 			fabric: '='
@@ -14,6 +16,8 @@ angular.module('common.fabric.directive', [
 DirectiveController.$inject = ['$scope', '$timeout', '$element', 'FabricCanvas'];
 
 function DirectiveController($scope, $timeout, $element, FabricCanvas) {
+	'use strict';
+
 	var controller = function () {
 		FabricCanvas.setElement($element);
 		FabricCanvas.createCanvas();
@@ -21,8 +25,8 @@ function DirectiveController($scope, $timeout, $element, FabricCanvas) {
 		// Continue rendering the canvas until the user clicks
 		// to avoid the "calcOffset" bug upon load.
 		$('body').on('click', 'canvas', function() {
-			if (fabric.setUserHasClickedCanvas) {
-				fabric.setUserHasClickedCanvas(true);
+			if ($scope.fabric.setUserHasClickedCanvas) {
+				$scope.fabric.setUserHasClickedCanvas(true);
 			}
 		});
 
@@ -30,64 +34,64 @@ function DirectiveController($scope, $timeout, $element, FabricCanvas) {
 		// Watching Controller Variables
 		// ============================================================
 		$scope.$watch('fabric.canvasBackgroundColor', function(newVal) {
-			if (fabric.setCanvasBackgroundColor) {
-				fabric.setCanvasBackgroundColor(newVal);
+			if ($scope.fabric.setCanvasBackgroundColor) {
+				$scope.fabric.setCanvasBackgroundColor(newVal);
 			}
 		});
 
 		$scope.$watch('fabric.selectedObject.text', function(newVal) {
 			if (typeof newVal === 'string') {
-				fabric.setText(newVal);
-				fabric.render();
+				$scope.fabric.setText(newVal);
+				$scope.fabric.render();
 			}
 		});
 
 		$scope.$watch('fabric.selectedObject.fontSize', function(newVal) {
 			if (typeof newVal === 'string' || typeof newVal === 'number') {
-				fabric.setFontSize(newVal);
-				fabric.render();
+				$scope.fabric.setFontSize(newVal);
+				$scope.fabric.render();
 			}
 		});
 
 		$scope.$watch('fabric.selectedObject.lineHeight', function(newVal) {
 			if (typeof newVal === 'string' || typeof newVal === 'number') {
-				fabric.setLineHeight(newVal);
-				fabric.render();
+				$scope.fabric.setLineHeight(newVal);
+				$scope.fabric.render();
 			}
 		});
 
 		$scope.$watch('fabric.selectedObject.textAlign', function(newVal) {
 			if (typeof newVal === 'string') {
-				fabric.setTextAlign(newVal);
-				fabric.render();
+				$scope.fabric.setTextAlign(newVal);
+				$scope.fabric.render();
 			}
 		});
 
 		$scope.$watch('fabric.selectedObject.fontFamily', function(newVal) {
 			if (typeof newVal === 'string' && newVal) {
-				fabric.setFontFamily(newVal);
-				fabric.render();
+				$scope.fabric.setFontFamily(newVal);
+				$scope.fabric.render();
 			}
 		});
 
 		$scope.$watch('fabric.selectedObject.opacity', function(newVal) {
 			if (typeof newVal === 'string' || typeof newVal === 'number') {
-				fabric.setOpacity(newVal);
-				fabric.render();
+				$scope.fabric.setOpacity(newVal);
+				$scope.fabric.render();
 			}
 		});
 
 		$scope.$watch('fabric.selectedObject.fill', function(newVal) {
 			if (typeof newVal === 'string') {
-				fabric.setFill(newVal);
-				fabric.render();
+				$scope.fabric.setFill(newVal);
+				$scope.fabric.render();
 			}
 		});
 
 		$scope.$watch('fabric.selectedObject.tint', function(newVal) {
 			if (typeof newVal === 'string') {
-				fabric.setTint(newVal);
-				fabric.render();
+				$scope.fabric.setTint(newVal);
+				$scope.fabric.render();
 			}
 		});
 	};

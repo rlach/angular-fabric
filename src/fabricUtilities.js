@@ -20,6 +20,8 @@ angular.module('common.fabric.utilities', [])
 }])
 
 .factory('Keypress', [function() {
+	'use strict';
+
 	var self = {};
 
 	self.onSave = function(cb) {
@@ -41,6 +43,8 @@ angular.module('common.fabric.utilities', [])
 }])
 
 .filter('reverse', [function() {
+	'use strict';
+	
 	return function(items) {
 		if (items) {
 			return items.slice().reverse();
