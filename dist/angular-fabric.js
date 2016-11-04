@@ -1194,7 +1194,7 @@ angular.module('common.fabric.directive', [
 
 	return {
 		scope: {
-			fabric: '='
+			fabric: '@'
 		},
 		controller: DirectiveController
 	};
