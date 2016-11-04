@@ -9,7 +9,7 @@ var paths = {
 
 gulp.task('bump', [], function () {
   return gulp.src('./*.json')
-    .pipe(bump({type: 'minor'}))
+    .pipe(bump({type: 'patch'}))
     .pipe(gulp.dest('./'));
 });
 

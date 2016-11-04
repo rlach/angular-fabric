@@ -338,7 +338,7 @@ angular.module('common.fabric', [
 
 			self.toggleBold = function(object) {
 				setActiveStyle('fontWeight',
-					getActiveStyle('fontWeight') === 'bold' ? '' : 'bold',
+					getActiveStyle('fontWeight', object) === 'bold' ? '' : 'bold',
 					object);
 				self.render();
 			};
@@ -352,7 +352,7 @@ angular.module('common.fabric', [
 
 			self.toggleItalic = function(object) {
 				setActiveStyle('fontStyle',
-					getActiveStyle('fontStyle') === 'italic' ? '' : 'italic',
+					getActiveStyle('fontStyle', object) === 'italic' ? '' : 'italic',
 					object);
 				self.render();
 			};
@@ -366,8 +366,8 @@ angular.module('common.fabric', [
 
 			self.toggleUnderline = function(object) {
 				var value = self.isUnderline() ?
-					getActiveStyle('textDecoration').replace('underline', '') :
-					(getActiveStyle('textDecoration') + ' underline');
+					getActiveStyle('textDecoration', object).replace('underline', '') :
+					(getActiveStyle('textDecoration', object) + ' underline');
 
 				setActiveStyle('textDecoration', value, object);
 				self.render();
@@ -382,8 +382,8 @@ angular.module('common.fabric', [
 
 			self.toggleLinethrough = function(object) {
 				var value = self.isLinethrough() ?
-					getActiveStyle('textDecoration').replace('line-through', '') :
-					(getActiveStyle('textDecoration') + ' line-through');
+					getActiveStyle('textDecoration', object).replace('line-through', '') :
+					(getActiveStyle('textDecoration', object) + ' line-through');
 
 				setActiveStyle('textDecoration', value, object);
 				self.render();
