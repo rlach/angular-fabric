@@ -360,8 +360,8 @@ angular.module('common.fabric', [
 			//
 			// Underline
 			// ==============================================================
-			self.isUnderline = function() {
-				return getActiveStyle('textDecoration').indexOf('underline') > -1;
+			self.isUnderline = function(object) {
+				return getActiveStyle('textDecoration', object).indexOf('underline') > -1;
 			};
 
 			self.toggleUnderline = function(object) {
@@ -376,8 +376,8 @@ angular.module('common.fabric', [
 			//
 			// Linethrough
 			// ==============================================================
-			self.isLinethrough = function() {
-				return getActiveStyle('textDecoration').indexOf('line-through') > -1;
+			self.isLinethrough = function(object) {
+				return getActiveStyle('textDecoration', object).indexOf('line-through') > -1;
 			};
 
 			self.toggleLinethrough = function(object) {
