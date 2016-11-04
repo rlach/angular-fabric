@@ -57,7 +57,9 @@ angular.module('common.fabric', [
 					return '';
 				}
 
-				return (object.getSelectionStyles && object.isEditing) ? (object.getSelectionStyles()[styleName] || '') : (object[styleName] || '');
+				return (object.getSelectionStyles && object.isEditing) ?
+					(object.getSelectionStyles()[styleName] || '') :
+					(object[styleName] || '');
 			}
 
 			function setActiveStyle(styleName, value, object) {
@@ -74,10 +76,12 @@ angular.module('common.fabric', [
 				self.render();
 			}
 
-			function getActiveProp(name) {
-				var object = canvas.getActiveObject();
+			function getActiveProp(name, object) {
+				object = object || canvas.getActiveObject();
 
-				return typeof object === 'object' && object !== null ? object[name] : '';
+				return typeof object === 'object' && object !== null ?
+					object[name] :
+					'';
 			}
 
 			function setActiveProp(name, value, object) {
@@ -182,10 +186,6 @@ angular.module('common.fabric', [
 				self.setZoom();
 			};
 
-			self.isLoading = function() {
-				return self.isLoading;
-			};
-
 			self.deactivateAll = function() {
 				canvas.deactivateAll();
 				self.deselectActiveObject();
@@ -218,7 +218,7 @@ angular.module('common.fabric', [
 			//
 			// Image
 			// ==============================================================
-			self.addImage = function(imageURL) {
+			self.addImage = function(imageURL, callback) {
 				FabricWindow.Image.fromURL(imageURL, function(object) {
 					object.id = self.createId();
 
@@ -236,18 +236,22 @@ angular.module('common.fabric', [
 					object.applyFilters(canvas.renderAll.bind(canvas));
 
 					self.addObjectToCanvas(object);
+
+					callback(object);
 				}, self.imageDefaults);
 			};
 
 			//
 			// Shape
 			// ==============================================================
-			self.addShape = function(svgURL, options) {
+			self.addShape = function(svgURL, options, callback) {
 				FabricWindow.loadSVGFromURL(svgURL, function(objects, options) {
 					var object = FabricWindow.util.groupSVGElements(objects, options);
 					object.id = self.createId();
 
 					self.addObjectToCanvas(object);
+
+					callback(object);
 				});
 			};
 
@@ -274,66 +278,66 @@ angular.module('common.fabric', [
 				return object;
 			};
 
-			self.getText = function() {
-				return getActiveProp('text');
+			self.getText = function(object) {
+				return getActiveProp('text', object);
 			};
 
-			self.setText = function(value) {
-				setActiveProp('text', value);
+			self.setText = function(value, object) {
+				setActiveProp('text', value, object);
 			};
 
 			//
 			// Font Size
 			// ==============================================================
-			self.getFontSize = function() {
-				return getActiveStyle('fontSize');
+			self.getFontSize = function(object) {
+				return getActiveStyle('fontSize', object);
 			};
 
-			self.setFontSize = function(value) {
-				setActiveStyle('fontSize', parseInt(value, 10));
+			self.setFontSize = function(value, object) {
+				setActiveStyle('fontSize', parseInt(value, 10), object);
 				self.render();
 			};
 
 			//
 			// Text Align
 			// ==============================================================
-			self.getTextAlign = function() {
-				return capitalize(getActiveProp('textAlign'));
+			self.getTextAlign = function(object) {
+				return capitalize(getActiveProp('textAlign', object));
 			};
 
-			self.setTextAlign = function(value) {
-				setActiveProp('textAlign', value.toLowerCase());
+			self.setTextAlign = function(value, object) {
+				setActiveProp('textAlign', value.toLowerCase()), object;
 			};
 
 			//
 			// Font Family
 			// ==============================================================
-			self.getFontFamily = function() {
-				var fontFamily = getActiveProp('fontFamily');
+			self.getFontFamily = function(object) {
+				var fontFamily = getActiveProp('fontFamily', object);
 				return fontFamily ? fontFamily.toLowerCase() : '';
 			};
 
-			self.setFontFamily = function(value) {
-				setActiveProp('fontFamily', value.toLowerCase());
+			self.setFontFamily = function(value, object) {
+				setActiveProp('fontFamily', value.toLowerCase(), object);
 			};
 
 			//
 			// Lineheight
 			// ==============================================================
-			self.getLineHeight = function() {
-				return getActiveStyle('lineHeight');
+			self.getLineHeight = function(object) {
+				return getActiveStyle('lineHeight', object);
 			};
 
 			self.setLineHeight = function(value) {
-				setActiveStyle('lineHeight', parseFloat(value, 10));
+				setActiveStyle('lineHeight', parseFloat(value, 10), object);
 				self.render();
 			};
 
 			//
 			// Bold
 			// ==============================================================
-			self.isBold = function() {
-				return getActiveStyle('fontWeight') === 'bold';
+			self.isBold = function(object) {
+				return getActiveStyle('fontWeight', object) === 'bold';
 			};
 
 			self.toggleBold = function(object) {
@@ -346,8 +350,8 @@ angular.module('common.fabric', [
 			//
 			// Italic
 			// ==============================================================
-			self.isItalic = function() {
-				return getActiveStyle('fontStyle') === 'italic';
+			self.isItalic = function(object) {
+				return getActiveStyle('fontStyle', object) === 'italic';
 			};
 
 			self.toggleItalic = function(object) {
@@ -365,7 +369,7 @@ angular.module('common.fabric', [
 			};
 
 			self.toggleUnderline = function(object) {
-				var value = self.isUnderline() ?
+				var value = self.isUnderline(object) ?
 					getActiveStyle('textDecoration', object).replace('underline', '') :
 					(getActiveStyle('textDecoration', object) + ' underline');
 
@@ -381,7 +385,7 @@ angular.module('common.fabric', [
 			};
 
 			self.toggleLinethrough = function(object) {
-				var value = self.isLinethrough() ?
+				var value = self.isLinethrough(object) ?
 					getActiveStyle('textDecoration', object).replace('line-through', '') :
 					(getActiveStyle('textDecoration', object) + ' line-through');
 
@@ -392,68 +396,68 @@ angular.module('common.fabric', [
 			//
 			// Text Align
 			// ==============================================================
-			self.getTextAlign = function() {
-				return getActiveProp('textAlign');
+			self.getTextAlign = function(object) {
+				return getActiveProp('textAlign', object);
 			};
 
-			self.setTextAlign = function(value) {
-				setActiveProp('textAlign', value);
+			self.setTextAlign = function(value, object) {
+				setActiveProp('textAlign', value, object);
 			};
 
 			//
 			// Opacity
 			// ==============================================================
-			self.getOpacity = function() {
-				return getActiveStyle('opacity');
+			self.getOpacity = function(object) {
+				return getActiveStyle('opacity', object);
 			};
 
-			self.setOpacity = function(value) {
-				setActiveStyle('opacity', value);
+			self.setOpacity = function(value, object) {
+				setActiveStyle('opacity', value, object);
 			};
 
 			//
 			// FlipX
 			// ==============================================================
-			self.getFlipX = function() {
-				return getActiveProp('flipX');
+			self.getFlipX = function(object) {
+				return getActiveProp('flipX', object);
 			};
 
-			self.setFlipX = function(value) {
-				setActiveProp('flipX', value);
+			self.setFlipX = function(value, object) {
+				setActiveProp('flipX', value, object);
 			};
 
-			self.toggleFlipX = function() {
-				var value = self.getFlipX() ? false : true;
-				self.setFlipX(value);
+			self.toggleFlipX = function(object) {
+				var value = !self.getFlipX(object);
+				self.setFlipX(value, object);
 				self.render();
 			};
 
 			//
 			// Align Active Object
 			// ==============================================================
-			self.center = function() {
-				var activeObject = canvas.getActiveObject();
-				if (activeObject) {
-					activeObject.center();
-					self.updateActiveObjectOriginals();
+			self.center = function(object) {
+				object = object || canvas.getActiveObject();
+				if (!!object) {
+					object.center();
+					self.updateObjectOriginals(object);
 					self.render();
 				}
 			};
 
-			self.centerH = function() {
-				var activeObject = canvas.getActiveObject();
-				if (activeObject) {
-					activeObject.centerH();
-					self.updateActiveObjectOriginals();
+			self.centerH = function(object) {
+				object = object || canvas.getActiveObject();
+				if (object) {
+					object.centerH();
+					self.updateObjectOriginals(object);
 					self.render();
 				}
 			};
 
-			self.centerV = function() {
-				var activeObject = canvas.getActiveObject();
-				if (activeObject) {
-					activeObject.centerV();
-					self.updateActiveObjectOriginals();
+			self.centerV = function(object) {
+				object = object || canvas.getActiveObject();
+				if (object) {
+					object.centerV();
+					self.updateObjectOriginals(object);
 					self.render();
 				}
 			};
@@ -461,34 +465,34 @@ angular.module('common.fabric', [
 			//
 			// Active Object Layer Position
 			// ==============================================================
-			self.sendBackwards = function() {
-				var activeObject = canvas.getActiveObject();
-				if (activeObject) {
-					canvas.sendBackwards(activeObject);
+			self.sendBackwards = function(object) {
+				object = object || canvas.getActiveObject();
+				if (object) {
+					canvas.sendBackwards(object);
 					self.render();
 				}
 			};
 
-			self.sendToBack = function() {
-				var activeObject = canvas.getActiveObject();
-				if (activeObject) {
-					canvas.sendToBack(activeObject);
+			self.sendToBack = function(object) {
+				object = object || canvas.getActiveObject();
+				if (object) {
+					canvas.sendToBack(object);
 					self.render();
 				}
 			};
 
-			self.bringForward = function() {
-				var activeObject = canvas.getActiveObject();
-				if (activeObject) {
-					canvas.bringForward(activeObject);
+			self.bringForward = function(object) {
+				object = object || canvas.getActiveObject();
+				if (object) {
+					canvas.bringForward(object);
 					self.render();
 				}
 			};
 
-			self.bringToFront = function() {
-				var activeObject = canvas.getActiveObject();
-				if (activeObject) {
-					canvas.bringToFront(activeObject);
+			self.bringToFront = function(object) {
+				object = object || canvas.getActiveObject();
+				if (object) {
+					canvas.bringToFront(object);
 					self.render();
 				}
 			};
@@ -496,19 +500,19 @@ angular.module('common.fabric', [
 			//
 			// Active Object Tint Color
 			// ==============================================================
-			self.isTinted = function() {
-				return getActiveProp('isTinted');
+			self.isTinted = function(object) {
+				return getActiveProp('isTinted', object);
 			};
 
-			self.toggleTint = function() {
-				var activeObject = canvas.getActiveObject();
-				activeObject.isTinted = !activeObject.isTinted;
-				activeObject.filters[0].opacity = activeObject.isTinted ? 1 : 0;
-				activeObject.applyFilters(canvas.renderAll.bind(canvas));
+			self.toggleTint = function(object) {
+				object = object || canvas.getActiveObject();
+				object.isTinted = !object.isTinted;
+				object.filters[0].opacity = object.isTinted ? 1 : 0;
+				object.applyFilters(canvas.renderAll.bind(canvas));
 			};
 
-			self.getTint = function() {
-				var object = canvas.getActiveObject();
+			self.getTint = function(object) {
+				object = object || canvas.getActiveObject();
 
 				if (typeof object !== 'object' || object === null) {
 					return '';
@@ -521,16 +525,16 @@ angular.module('common.fabric', [
 				}
 			};
 
-			self.setTint = function(tint) {
+			self.setTint = function(tint, object) {
 				if (! isHex(tint)) {
 					return;
 				}
 
-				var activeObject = canvas.getActiveObject();
-				if (activeObject.filters !== undefined) {
-					if (activeObject.filters[0] !== undefined) {
-						activeObject.filters[0].color = tint;
-						activeObject.applyFilters(canvas.renderAll.bind(canvas));
+				object = object || canvas.getActiveObject();
+				if (object.filters !== undefined) {
+					if (object.filters[0] !== undefined) {
+						object.filters[0].color = tint;
+						object.applyFilters(canvas.renderAll.bind(canvas));
 					}
 				}
 			};
@@ -538,15 +542,15 @@ angular.module('common.fabric', [
 			//
 			// Active Object Fill Color
 			// ==============================================================
-			self.getFill = function() {
-				return getActiveStyle('fill');
+			self.getFill = function(object) {
+				return getActiveStyle('fill', object);
 			};
 
-			self.setFill = function(value) {
-				var object = canvas.getActiveObject();
+			self.setFill = function(value, object) {
+				object = object || canvas.getActiveObject();
 				if (object) {
 					if (object.type === 'text') {
-						setActiveStyle('fill', value);
+						setActiveStyle('fill', value, object);
 					} else {
 						self.setFillPath(object, value);
 					}
@@ -623,8 +627,7 @@ angular.module('common.fabric', [
 				canvas.setHeight(tempHeight);
 			};
 
-			self.updateActiveObjectOriginals = function() {
-				var object = canvas.getActiveObject();
+			self.updateObjectOriginals = function (object) {
 				if (object) {
 					object.originalScaleX = object.scaleX / self.canvasScale;
 					object.originalScaleY = object.scaleY / self.canvasScale;
@@ -633,51 +636,64 @@ angular.module('common.fabric', [
 				}
 			};
 
+			self.updateActiveObjectOriginals = function() {
+				var object = canvas.getActiveObject();
+				self.updateObjectOriginals(object);
+			};
+
 			//
 			// Active Object Lock
 			// ==============================================================
-			self.toggleLockActiveObject = function() {
-				var activeObject = canvas.getActiveObject();
-				if (activeObject) {
-					activeObject.lockMovementX = !activeObject.lockMovementX;
-					activeObject.lockMovementY = !activeObject.lockMovementY;
-					activeObject.lockScalingX = !activeObject.lockScalingX;
-					activeObject.lockScalingY = !activeObject.lockScalingY;
-					activeObject.lockUniScaling = !activeObject.lockUniScaling;
-					activeObject.lockRotation = !activeObject.lockRotation;
-					activeObject.lockObject = !activeObject.lockObject;
+			self.toggleLock = function (object) {
+				if (object) {
+					object.lockMovementX = !object.lockMovementX;
+					object.lockMovementY = !object.lockMovementY;
+					object.lockScalingX = !object.lockScalingX;
+					object.lockScalingY = !object.lockScalingY;
+					object.lockUniScaling = !object.lockUniScaling;
+					object.lockRotation = !object.lockRotation;
+					object.lockObject = !object.lockObject;
 					self.render();
 				}
+			};
+			
+			self.toggleLockActiveObject = function() {
+				var activeObject = canvas.getActiveObject();
+				self.toggleLock(activeObject);
 			};
 
 			//
 			// Active Object
 			// ==============================================================
-			self.selectActiveObject = function() {
-				var activeObject = canvas.getActiveObject();
-				if (! activeObject) {
+			self.selectActiveObject = function(object) {
+				object = object || canvas.getActiveObject();
+				if (!object) {
 					return;
 				}
 
-				self.selectedObject = activeObject;
-				self.selectedObject.text = self.getText();
-				self.selectedObject.fontSize = self.getFontSize();
-				self.selectedObject.lineHeight = self.getLineHeight();
-				self.selectedObject.textAlign = self.getTextAlign();
-				self.selectedObject.opacity = self.getOpacity();
-				self.selectedObject.fontFamily = self.getFontFamily();
-				self.selectedObject.fill = self.getFill();
-				self.selectedObject.tint = self.getTint();
+				self.selectedObject = object;
+				self.selectedObject.text = self.getText(object);
+				self.selectedObject.fontSize = self.getFontSize(object);
+				self.selectedObject.lineHeight = self.getLineHeight(object);
+				self.selectedObject.textAlign = self.getTextAlign(object);
+				self.selectedObject.opacity = self.getOpacity(object);
+				self.selectedObject.fontFamily = self.getFontFamily(object);
+				self.selectedObject.fill = self.getFill(object);
+				self.selectedObject.tint = self.getTint(object);
 			};
 
 			self.deselectActiveObject = function() {
 				self.selectedObject = false;
 			};
 
+			self.deleteObject = function (object) {
+				canvas.remove(object);
+				self.render();
+			};
+
 			self.deleteActiveObject = function() {
 				var activeObject = canvas.getActiveObject();
-				canvas.remove(activeObject);
-				self.render();
+				self.deleteObject(activeObject);
 			};
 
 			//
