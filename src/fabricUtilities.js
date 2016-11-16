@@ -1,6 +1,8 @@
 angular.module('common.fabric.utilities', [])
 
 .directive('parentClick', ['$timeout', function($timeout) {
+	'use strict';
+
 	return {
 		scope: {
 			parentClick: '&'
@@ -24,17 +26,26 @@ angular.module('common.fabric.utilities', [])
 
 	var self = {};
 
-	self.onSave = function(cb) {
-		$(document).keydown(function(event) {
-			// If Control or Command key is pressed and the S key is pressed
-			// run save function. 83 is the key code for S.
-			if((event.ctrlKey || event.metaKey) && event.which === 83) {
-				// Save Function
+	self.onKeyDown = function (listenerArea, callback) {
+		listenerArea.keydown(function (event) {
+			callback(event);
+		});
+	};
+
+	self.onKeyCode = function (listenerArea, keyCode, callback) {
+		self.onKeyDown(listenerArea, function (event) {
+			if (event.which === keyCode) {
 				event.preventDefault();
+				callback(event);
+			}
+		});
+	};
 
-				cb();
-
-				return false;
+	self.onCtrlAndS = function(callback) {
+		self.onKeyDown(document, function (event) {
+			if((event.ctrlKey || event.metaKey) && event.which === 83) {
+				event.preventDefault();
+				callback(event);
 			}
 		});
 	};
@@ -42,12 +53,26 @@ angular.module('common.fabric.utilities', [])
 	return self;
 }])
 
-.filter('reverse', [function() {
+.filter('reverse', [function () {
 	'use strict';
 	
 	return function(items) {
 		if (items) {
 			return items.slice().reverse();
 		}
+	};
+}])
+
+.filter('containsObjectByName', [function (caseSensitive) {
+	'use strict';
+
+	return function (objectArray, targetName) {
+		return objectArray.some(function (object) {
+			if (!!object.name) {
+				return !!caseSensitive ?
+					object.name.toLowerCase() === targetName.toLowerCase() :
+					object.name === targetName;
+			}
+		});
 	};
 }]);

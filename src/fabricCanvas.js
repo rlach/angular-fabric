@@ -4,7 +4,7 @@ angular.module('common.fabric.canvas', [
 
 .service('FabricCanvas', ['FabricWindow', '$rootScope', function(FabricWindow, $rootScope) {
 	'use strict';
-	
+
 	var self = {
 		canvasId: null,
 		element: null,
@@ -35,6 +35,42 @@ angular.module('common.fabric.canvas', [
 
 	self.getCanvasId = function() {
 		return self.canvasId;
+	};
+
+	self.fixCanvasToBoundary = function (options) {
+		if (!options.target) {
+			return;
+		}
+
+		var obj = options.target;
+		// if object is too big ignore
+		if (obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width) {
+			return;
+		}
+
+		obj.setCoords();
+		var boundingObj = obj.getBoundingRect();
+
+		// top-left  corner
+		if(boundingObj.top < 0 || boundingObj.left < 0) {
+			obj.top = Math.max(obj.top, obj.top - boundingObj.top);
+			obj.left = Math.max(obj.left, obj.left - boundingObj.left);
+		}
+
+		// bot-right corner
+		if (boundingObj.top + boundingObj.height > obj.canvas.height ||
+			boundingObj.left+boundingObj.width > obj.canvas.width) {
+			obj.top = Math.min(obj.top,
+				obj.canvas.height - boundingObj.height + obj.top - boundingObj.top);
+			obj.left = Math.min(obj.left,
+				obj.canvas.width - boundingObj.width + obj.left - boundingObj.left);
+		}
+	};
+
+	self.focusCanvasWrapper = function (canvasRef) {
+		canvasRef = canvasRef || self.canvas;
+
+		canvasRef.wrapperEl.focus();
 	};
 
 	return self;

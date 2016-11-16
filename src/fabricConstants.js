@@ -76,19 +76,8 @@ angular.module('common.fabric.constants', [])
 
 		fonts: [
 			{ name: 'Arial' },
-			{ name: 'Lora' },
-			{ name: 'Croissant One' },
-			{ name: 'Architects Daughter' },
-			{ name: 'Emblema One' },
-			{ name: 'Graduate' },
-			{ name: 'Hammersmith One' },
-			{ name: 'Oswald' },
-			{ name: 'Oxygen' },
-			{ name: 'Krona One' },
-			{ name: 'Indie Flower' },
-			{ name: 'Courgette' },
-			{ name: 'Gruppo' },
-			{ name: 'Ranchers' }
+			{ name: 'Impact' },
+			{ name: 'Tahoma' }
 		],
 
 		shapeCategories: [

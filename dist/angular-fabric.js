@@ -968,7 +968,7 @@ angular.module('common.fabric.canvas', [
 
 .service('FabricCanvas', ['FabricWindow', '$rootScope', function(FabricWindow, $rootScope) {
 	'use strict';
-	
+
 	var self = {
 		canvasId: null,
 		element: null,
@@ -999,6 +999,42 @@ angular.module('common.fabric.canvas', [
 
 	self.getCanvasId = function() {
 		return self.canvasId;
+	};
+
+	self.fixCanvasToBoundary = function (options) {
+		if (!options.target) {
+			return;
+		}
+
+		var obj = options.target;
+		// if object is too big ignore
+		if (obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width) {
+			return;
+		}
+
+		obj.setCoords();
+		var boundingObj = obj.getBoundingRect();
+
+		// top-left  corner
+		if(boundingObj.top < 0 || boundingObj.left < 0) {
+			obj.top = Math.max(obj.top, obj.top - boundingObj.top);
+			obj.left = Math.max(obj.left, obj.left - boundingObj.left);
+		}
+
+		// bot-right corner
+		if (boundingObj.top + boundingObj.height > obj.canvas.height ||
+			boundingObj.left+boundingObj.width > obj.canvas.width) {
+			obj.top = Math.min(obj.top,
+				obj.canvas.height - boundingObj.height + obj.top - boundingObj.top);
+			obj.left = Math.min(obj.left,
+				obj.canvas.width - boundingObj.width + obj.left - boundingObj.left);
+		}
+	};
+
+	self.focusCanvasWrapper = function (canvasRef) {
+		canvasRef = canvasRef || self.canvas;
+
+		canvasRef.wrapperEl.focus();
 	};
 
 	return self;
@@ -1083,19 +1119,8 @@ angular.module('common.fabric.constants', [])
 
 		fonts: [
 			{ name: 'Arial' },
-			{ name: 'Lora' },
-			{ name: 'Croissant One' },
-			{ name: 'Architects Daughter' },
-			{ name: 'Emblema One' },
-			{ name: 'Graduate' },
-			{ name: 'Hammersmith One' },
-			{ name: 'Oswald' },
-			{ name: 'Oxygen' },
-			{ name: 'Krona One' },
-			{ name: 'Indie Flower' },
-			{ name: 'Courgette' },
-			{ name: 'Gruppo' },
-			{ name: 'Ranchers' }
+			{ name: 'Impact' },
+			{ name: 'Tahoma' }
 		],
 
 		shapeCategories: [
@@ -1312,7 +1337,8 @@ angular.module('common.fabric.dirtyStatus', [])
 
 	function checkSaveStatus() {
 		if (self.isDirty()) {
-			return "Oops! You have unsaved changes.\n\nPlease save before leaving so you don't lose any work.";
+			return 'Oops! You have unsaved changes.\n\n' +
+				'Please save before leaving so you don\'t lose any work.';
 		}
 	}
 
@@ -1341,6 +1367,8 @@ angular.module('common.fabric.dirtyStatus', [])
 angular.module('common.fabric.utilities', [])
 
 .directive('parentClick', ['$timeout', function($timeout) {
+	'use strict';
+
 	return {
 		scope: {
 			parentClick: '&'
@@ -1364,17 +1392,26 @@ angular.module('common.fabric.utilities', [])
 
 	var self = {};
 
-	self.onSave = function(cb) {
-		$(document).keydown(function(event) {
-			// If Control or Command key is pressed and the S key is pressed
-			// run save function. 83 is the key code for S.
-			if((event.ctrlKey || event.metaKey) && event.which === 83) {
-				// Save Function
+	self.onKeyDown = function (listenerArea, callback) {
+		listenerArea.keydown(function (event) {
+			callback(event);
+		});
+	};
+
+	self.onKeyCode = function (listenerArea, keyCode, callback) {
+		self.onKeyDown(listenerArea, function (event) {
+			if (event.which === keyCode) {
 				event.preventDefault();
+				callback(event);
+			}
+		});
+	};
 
-				cb();
-
-				return false;
+	self.onCtrlAndS = function(callback) {
+		self.onKeyDown(document, function (event) {
+			if((event.ctrlKey || event.metaKey) && event.which === 83) {
+				event.preventDefault();
+				callback(event);
 			}
 		});
 	};
@@ -1382,13 +1419,27 @@ angular.module('common.fabric.utilities', [])
 	return self;
 }])
 
-.filter('reverse', [function() {
+.filter('reverse', [function () {
 	'use strict';
 	
 	return function(items) {
 		if (items) {
 			return items.slice().reverse();
 		}
+	};
+}])
+
+.filter('containsObjectByName', [function (caseSensitive) {
+	'use strict';
+
+	return function (objectArray, targetName) {
+		return objectArray.some(function (object) {
+			if (!!object.name) {
+				return !!caseSensitive ?
+					object.name.toLowerCase() === targetName.toLowerCase() :
+					object.name === targetName;
+			}
+		});
 	};
 }]);
 

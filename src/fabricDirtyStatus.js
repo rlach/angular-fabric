@@ -9,7 +9,8 @@ angular.module('common.fabric.dirtyStatus', [])
 
 	function checkSaveStatus() {
 		if (self.isDirty()) {
-			return "Oops! You have unsaved changes.\n\nPlease save before leaving so you don't lose any work.";
+			return 'Oops! You have unsaved changes.\n\n' +
+				'Please save before leaving so you don\'t lose any work.';
 		}
 	}
 
