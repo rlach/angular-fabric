@@ -1393,9 +1393,9 @@ angular.module('common.fabric.utilities', [])
 	var self = {};
 
 	self.onKeyDown = function (listenerArea, callback) {
-		listenerArea.keydown(function (event) {
+		listenerArea.addEventListener('keydown', function (event) {
 			callback(event);
-		});
+		}, false);
 	};
 
 	self.onKeyCode = function (listenerArea, keyCode, callback) {
