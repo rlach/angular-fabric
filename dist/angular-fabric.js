@@ -1419,7 +1419,7 @@ angular.module('common.fabric.utilities', [])
 	return self;
 }])
 
-.filter('reverse', [function () {
+.filter('Reverse', [function () {
 	'use strict';
 	
 	return function(items) {
@@ -1429,10 +1429,10 @@ angular.module('common.fabric.utilities', [])
 	};
 }])
 
-.filter('containsObjectByName', [function (caseSensitive) {
+.filter('ArrayContainsName', [function () {
 	'use strict';
 
-	return function (objectArray, targetName) {
+	return function (objectArray, targetName, caseSensitive) {
 		return objectArray.some(function (object) {
 			if (!!object.name) {
 				return !!caseSensitive ?
