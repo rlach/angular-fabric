@@ -241,6 +241,10 @@ angular.module('common.fabric', [
                 }, self.imageDefaults);
             };
 
+            self.getCanvas = function () {
+              return canvas;
+            };
+
             //
             // Shape
             // ==============================================================
