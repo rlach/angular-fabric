@@ -288,7 +288,7 @@ angular.module('common.fabric', [
                 var object = new FabricWindow.Textbox(str, self.textDefaults);
                 object.id = self.createId();
                 object.editable = isEditable;
-                
+
                 self.addObjectToCanvas(object);
 
                 return object;
@@ -672,7 +672,7 @@ angular.module('common.fabric', [
                     self.render();
                 }
             };
-            
+
             self.toggleLockActiveObject = function() {
                 var activeObject = canvas.getActiveObject();
                 self.toggleLock(activeObject);
@@ -755,7 +755,7 @@ angular.module('common.fabric', [
                 return json;
             };
 
-            self.loadJSON = function(json) {
+            self.loadJSON = function(json, callback) {
                 self.setLoading(true);
                 canvas.loadFromJSON(json, function() {
                     $timeout(function() {
@@ -766,6 +766,10 @@ angular.module('common.fabric', [
                         }
 
                         self.render();
+
+                        if(angular.isDefined(callback)) {
+                          callback();
+                        }
                     });
                 });
             };
