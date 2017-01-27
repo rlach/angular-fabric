@@ -2,7 +2,7 @@
   "name": "angular-fabric",
   "main": "dist/angular-fabric.js",
   "private": true,
-  "version": "0.3.11",
+  "version": "0.3.12",
   "description": "AngularJS directive FabricJS",
   "license": "MIT",
   "ignore": [
@@ -20,6 +20,6 @@
   ],
   "dependencies": {
     "angular": ">1.4.0",
-    "fabric": "~1.6.x"
+    "fabric": "~1.7.x"
   }
 }
